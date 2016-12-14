@@ -1,0 +1,23 @@
+<% if User.find(session[:user_id]).profile %>
+	<%= User.find(session[:user_id]).profile.body %>
+<% end %>
+	
+<form method="POST" action="/profile">
+	<fieldset>
+	  	<legend>Update Profile</legend>
+		<label for="body">New Profile</label>
+		<textarea name="body"></textarea><br/>
+		<input type="submit">
+	</fieldset>
+</form>
+
+<form method="POST" action="/blog">
+	<fieldset>
+	  	<legend>New Post</legend>
+	  	<label for="title">Title:</label>
+	  	<input type="text" name="title" id="title"><br/><br/>
+		<label for="body">Post:</label>
+		<textarea name="body" id="body"></textarea><br/>
+		<input type="submit">
+	</fieldset>
+</form>
