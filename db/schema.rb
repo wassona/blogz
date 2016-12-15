@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20161214163026) do
   end
 
   create_table "user_followers", force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "leader_id"
     t.integer "follower_id"
   end
 

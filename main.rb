@@ -27,10 +27,11 @@ post '/login' do
 	if @user && @user.password == params[:password]
 		session[:user_id] = @user.id
 		flash[:notice] = "You've been signed in successfully!"
+		redirect '/my_page'
 	else
 		flash[:alert] = "There was a problem signing you in."
+		redirect '/'
 	end
-	redirect '/my_page'
 end
 
 get '/register' do
@@ -72,8 +73,53 @@ post '/profile' do
 end
 
 post '/blog' do
-	Post.create(user: current_user, title: params[:title], body: params[:body])
+	if params[:title] != "" || params[:body] != ""
+		Post.create(user: current_user, title: params[:title], body: params[:body])
+	end
 	redirect '/my_page'
 end
+
+post '/update_post' do
+	if params[:title] != "" || params[:body] != ""
+		Post.find(params[:post_id]).update_attributes(title: params[:title], body: params[:body])
+	end
+	redirect '/my_page'
+end
+
+post '/delete_post' do
+	Post.find(params[:post_id]).delete
+	redirect '/my_page'
+end
+
+get '/user_view/:id' do
+	@view = User.find(params[:id])
+	erb :user_view
+end
+
+post '/unfollow' do
+	current_user.leaders.delete(params[:view])
+	redirect '/user_view/' + (params[:view])
+end
+
+post '/follow' do
+	current_user.leaders.push(User.find(params[:view]))
+	redirect '/user_view/' + params[:view]
+end
+
+post '/delete_account' do
+	current_user.destroy
+	redirect '/logout'
+end
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -1,0 +1,31 @@
+<h1>Welcome to <%= @view.username %>'s page!</h1>
+<% if @view.profile %>
+	<%= @view.profile.body %><br/>
+<% end %>
+<% if current_user %>
+	<% if current_user.leaders.include? @view %>
+		<form method="POST" action="/unfollow">
+			<input name="view" value="<%= @view.id %>" type="hidden">
+			<button>Unfollow</button>
+		</form>
+	<% else %>
+		<form method="POST" action="/follow">
+			<input name="view" value="<%= @view.id %>" type="hidden">
+			<button>Follow</button>
+		</form>
+	<% end %>
+<% end %>
+Following:<br/>
+	<% if @view.leaders.length < 1 %>
+		Nobody. Very sad.
+	<% else %>
+		<% @view.leaders.each do |i| %>
+			<a href="/user_view/<%= i.id %>"><%= i.username %></a><br/>
+		<% end %>
+	<% end %>
+<% @view.posts.each do |i| %>
+	<fieldset>
+		<legend><%= i.title %>, <%= i.created_at %></legend>
+		<%= i.body %>
+	</fieldset>
+<% end %>
