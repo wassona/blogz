@@ -1,31 +1,57 @@
-<h1>Welcome to <%= @view.username %>'s page!</h1>
-<% if @view.profile %>
-	<%= @view.profile.body %><br/>
-<% end %>
-<% if current_user %>
-	<% if current_user.leaders.include? @view %>
-		<form method="POST" action="/unfollow">
-			<input name="view" value="<%= @view.id %>" type="hidden">
-			<button>Unfollow</button>
-		</form>
-	<% else %>
-		<form method="POST" action="/follow">
-			<input name="view" value="<%= @view.id %>" type="hidden">
-			<button>Follow</button>
-		</form>
-	<% end %>
-<% end %>
-Following:<br/>
-	<% if @view.leaders.length < 1 %>
-		Nobody. Very sad.
-	<% else %>
-		<% @view.leaders.each do |i| %>
-			<a href="/user_view/<%= i.id %>"><%= i.username %></a><br/>
+<div class="row"></div>
+
+
+<div class="ui sixteen wide column">
+	<div class="ui three column padded doubling grid">
+		<div class="eight wide column">
+			<h1>Welcome to <%= @view.username %>'s page!</h1>
+			<% if @view.profile %>
+				<%= @view.profile.body %><br/>
+			<% end %>
+		</div>
+		<div class="four wide column">
+			Following:<br/>
+				<% if @view.leaders.length < 1 %>
+					Nobody. <%= @view.username %> isn't a follower.
+				<% else %>
+					<% @view.leaders.each do |i| %>
+						<a href="/user_view/<%= i.id %>"><%= i.username %></a><br/>
+					<% end %>
+				<% end %>
+				<br/>
+			Followed by:<br/>
+				<% if @view.followers.length <1 %>
+					No one yet. Maybe you?
+				<% else %>
+					<% @view.followers.each do |i| %>
+						<a href="/user_view/<%= i.id %>"><%= i.username %></a><br/>
+					<% end %>
+				<% end %>
+		</div>
+		<div class="four wide right aligned column">
+			<% if current_user %>
+				<% if current_user.leaders.include? @view %>
+					<form method="POST" action="/unfollow">
+						<input name="view" value="<%= @view.id %>" type="hidden">
+						<button class="ui negative basic button">Unfollow</button>
+					</form>
+				<% else %>
+					<form method="POST" action="/follow">
+						<input name="view" value="<%= @view.id %>" type="hidden">
+						<button class="ui positive basic button">Follow</button>
+					</form>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+</div>
+<div class="ui sixteen wide column">
+	<div class="ui four column padded doubling grid">
+		<% @view.posts.each do |i| %>
+			<div class="<%= COLORS[(i.id % 13)] %> column">
+				<h3><%= i.title %>,<br/> <%= i.created_at %></h3>
+				<%= i.body %>
+			</div>	
 		<% end %>
-	<% end %>
-<% @view.posts.each do |i| %>
-	<fieldset>
-		<legend><%= i.title %>, <%= i.created_at %></legend>
-		<%= i.body %>
-	</fieldset>
-<% end %>
+	</div>
+</div>

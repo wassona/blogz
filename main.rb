@@ -7,6 +7,7 @@ enable :sessions
 set :database, "sqlite3:blogz.db"
 
 require './models'
+require './colors'
 
 def current_user
 	if session[:user_id]
