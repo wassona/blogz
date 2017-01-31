@@ -5,7 +5,7 @@
 	<div class="ui four column padded doubling grid">
 		<% Post.all.reverse_each do |i| %>
 			<div class="<%= COLORS[(i.id % 13)] %> column">
-				<%= i.title %></h3>
+				<h3><%= i.title %></h3>
 				<h4><%= i.created_at %></h4>
 				<a href="user_view/<%= i.user_id %>"><%= User.find(i.user_id).username %></a>
 				<p><%= i.body %></p>

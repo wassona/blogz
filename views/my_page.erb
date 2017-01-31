@@ -1,85 +1,86 @@
-<div class="stretched three column row">
-	<!-- <div class="ui three column padded doubling grid"> -->
-		<div class="column">
-			<div class="ui segment">
-				<% if User.find(session[:user_id]).profile %>
-					<h3>Profile:</h3>
-					<%= User.find(session[:user_id]).profile.body %>
-					<br/>
-				<% end %>
-			</div>
-			<div class="ui segment">
-				<form method="POST" action="/profile">
-				  	<h3>Update Profile</h3>
+<div class="stretched three column doubling stackable row">
+	<div class="column">
+		<div class="ui segment">
+			<form class="ui form" method="POST" action="/blog">
+			  	<h3>New Post</h3>
+			  	<label for="title">Title:</label><br/>
+			  	<input type="text" name="title" id="title">
+			  	<br/><br/>
+				<label for="body">Post:</label><br/>
+				<textarea rows="3" class="ui top attached" name="body" id="body"></textarea><br/>
+				<button class="ui fluid bottom attached button">Submit</button>
+			</form>
+		</div>
+	</div>
+	<div class="column">
+		<div class="ui segment">
+			<% if User.find(session[:user_id]).profile %>
+				<h3>Profile:</h3>
+				<%= User.find(session[:user_id]).profile.body %>
+				<br/>
+			<% end %>
+		</div>
+		<div class="ui segment">
+			<form class="ui form" method="POST" action="/profile">
+			  	<h3>Update Profile</h3>
 					<label for="body">New Profile</label><br/>
-					<textarea name="body"></textarea><br/>
-					<input type="submit">
-				</form>
-			</div>
+					<textarea class="ui top attached" rows="2" name="body"></textarea><br/>
+				<button class="ui fluid bottom attached button">Submit</button>
+			</form>
 		</div>
+	</div>
 
-		<div class="column">
-			<div class="ui segment">
-			  	<h3>Update Account</h3>
-				<form method="POST" action="/change_password">
-					<label for="password">Password</label><br/>
-					<div class="ui right labeled left icon input">
-  						<input type="text" name="password" id="password">
-						<i class="privacy icon"></i>
-						<button class="ui right attached button">Submit</button>
-					</div>
-				</form>
-				<form method="POST" action="/change_email">
-					<label for="email">Email Address</label><br/>
-					<div class="ui right labeled left icon input">
-  						<input type="text" name="email" id="email">
-						<i class="mail icon"></i>
-						<button class="ui right attached button">Submit</button>
-					</div>
-				</form>
-				<form method="POST" action="/delete_account">
-					<input type="hidden" name="account_id" value="<%= current_user.id %>">
-					<button class="ui negative animated fade button">
-					  <div class="visible content">Delete Account</div>
-					  <div class="hidden content">
-					    Are you sure?
-					  </div>
-					</button>
-				</form>
-			</div>
+	<div class="column">
+		<div class="ui segment">
+		  	<h3>Update Account</h3>
+			<form method="POST" action="/change_password">
+				<label for="password">Password</label><br/>
+				<div class="ui fluid right labeled left icon input">
+						<input type="text" name="password" id="password">
+					<i class="privacy icon"></i>
+					<button class="ui right attached button">Submit</button>
+				</div>
+			</form>
+			<form method="POST" action="/change_email">
+				<label for="email">Email Address</label><br/>
+				<div class="ui fluid right labeled left icon input">
+						<input type="text" name="email" id="email">
+					<i class="mail icon"></i>
+					<button class="ui right attached button">Submit</button>
+				</div>
+			</form>
 		</div>
-
-		<div class="column">
-			<div class="ui segment">
-				<form method="POST" action="/blog">
-				  	<h3>New Post</h3>
-				  	<label for="title">Title:</label><br/>
-				  	<input type="text" name="title" id="title"><br/><br/>
-					<label for="body">Post:</label><br/>
-					<textarea name="body" id="body"></textarea><br/>
-					<input type="submit">
-				</form>
-			</div>
+		<div class="ui segment">
+			<form method="POST" action="/delete_account">
+				<input type="hidden" name="account_id" value="<%= current_user.id %>">
+				<button class="ui fluid negative animated fade button">
+				  <div class="visible content">Delete Account</div>
+				  <div class="hidden content">
+				    Are you sure?
+				  </div>
+				</button>
+			</form>
 		</div>
+	</div>
 </div>
 
 
 <div class="ui sixteen wide column">
 	<div class="ui four column padded doubling grid">
 		<% current_user.posts.each do |i| %>
-			<div class="four wide <%= COLORS[(i.id % 13)] %> column">	
-				<form method="POST" action="/update_post">
+			<div class="<%= COLORS[(i.id % 13)] %> column">	
+				<form class="ui form" method="POST" action="/update_post">
 					<input type="text" name="title" value="<%= i.title %>">,
 					<%= i.created_at %>
-					<textarea name="body" style="width: 90%"><%= i.body %></textarea>
+					<textarea class="ui attached" name="body"><%= i.body %></textarea>
 					<input name="post_id" value="<%= i.id %>" type="hidden">
 					<br/>
-					<button>Update Post</button>
+					<button class="ui fluid bottom attached button">Update Post</button>
 				</form>
-
-				<form method="POST" action="/delete_post">
+				<br/>
+				<form class="ui form" method="POST" action="/delete_post">
 					<input name="post_id" value="<%= i.id %>" type="hidden">
-					<button>Delete Post</button>
+					<button class="ui fluid red inverted button">Delete Post</button>
 				</form>
 			</div>
 		<% end %>
