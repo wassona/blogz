@@ -5,5 +5,6 @@ source "https://rubygems.org"
 gem 'activerecord'
 gem 'sinatra-activerecord'
 # gem 'sqlite3'
+gem 'pg'
 gem 'rake'
 gem 'sinatra-flash'
