@@ -2,9 +2,12 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/flash'
 
+
 enable :sessions
 
-set :database, "sqlite3:blogz.db"
+# set :database, "sqlite3:blogz.db"
+
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
 require './models'
 require './colors'
